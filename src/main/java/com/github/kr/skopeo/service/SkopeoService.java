@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.kr.skopeo.command.CommandExecutor;
 import com.github.kr.skopeo.responses.InspectResponse;
+import com.github.kr.skopeo.responses.TransferEntity;
 
 @Service
 public class SkopeoService {
@@ -32,6 +33,22 @@ public class SkopeoService {
 		}
 		
 		return inspectResponse;
+		
+	}
+
+	public String copyImage(TransferEntity transferEntity) {
+		
+		String source = transferEntity.getSource();
+		String destination = transferEntity.getDestination();
+		String response = "";
+		
+		try {
+			response = cmdExecutor.executeCopyCommand(source, destination);
+		} catch (IOException | InterruptedException ex) {
+			ex.printStackTrace();
+		}
+		
+		return response;
 		
 	}
 	
