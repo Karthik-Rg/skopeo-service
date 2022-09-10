@@ -20,12 +20,12 @@ public class SkopeoService {
 	@Autowired
 	CommandExecutor cmdExecutor;
 	
-	public InspectResponse inspectImage(String imageReference) {
+	public InspectResponse inspectImage(boolean tlsVerify, String imageReference) {
 		
 		logger.info("inspectImage");
 		InspectResponse inspectResponse = null;
 		try {
-			String response = cmdExecutor.executeInspectCommand(imageReference);
+			String response = cmdExecutor.executeInspectCommand(tlsVerify, imageReference);
 			inspectResponse = new ObjectMapper().readValue(response, InspectResponse.class);
 		} catch (IOException | InterruptedException ex) {
 			
@@ -40,10 +40,11 @@ public class SkopeoService {
 		
 		String source = transferEntity.getSource();
 		String destination = transferEntity.getDestination();
+		boolean transportSecured = transferEntity.isSecuredTransportLayer();
 		String response = "";
 		
 		try {
-			response = cmdExecutor.executeCopyCommand(source, destination);
+			response = cmdExecutor.executeCopyCommand(source, destination, transportSecured);
 		} catch (IOException | InterruptedException ex) {
 			ex.printStackTrace();
 		}

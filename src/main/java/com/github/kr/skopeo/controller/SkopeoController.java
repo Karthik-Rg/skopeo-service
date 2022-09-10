@@ -27,10 +27,10 @@ public class SkopeoController {
 	}
 	
 	@GetMapping("/inspect")
-	public InspectResponse inspectImage(@RequestParam("imageReference") String imageReference) {
+	public InspectResponse inspectImage(@RequestParam("tls-verify") boolean tlsVerify, @RequestParam("imageReference") String imageReference) {
 		
 		logger.info("inspectImage Controller");
-		return skopeoService.inspectImage(imageReference);
+		return skopeoService.inspectImage(tlsVerify, imageReference);
 		
 	}
 

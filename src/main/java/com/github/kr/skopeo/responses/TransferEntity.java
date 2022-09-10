@@ -15,4 +15,6 @@ public class TransferEntity {
 	
 	private String destination;
 	
+	private boolean securedTransportLayer;
+	
 }

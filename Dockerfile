@@ -2,7 +2,7 @@ FROM alpine:edge
 
 RUN apk add openjdk11
 RUN apk update
-RUN apk add skopeo
+RUN apk add curl skopeo
 
 RUN apk info -vv
 

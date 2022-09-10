@@ -16,11 +16,11 @@ public class CommandExecutor {
 
 	Logger logger = LoggerFactory.getLogger(CommandExecutor.class);
 
-	public String executeInspectCommand(String imageReference) throws IOException, InterruptedException {
+	public String executeInspectCommand(boolean tlsVerify, String imageReference) throws IOException, InterruptedException {
 
 		StringJoiner execCmdToken = new StringJoiner(" ");
 
-		execCmdToken.add(Commands.INSPECT).add(imageReference);
+		execCmdToken.add(Commands.INSPECT.concat(String.valueOf(tlsVerify))).add(imageReference);
 
 		logger.info("Inspect Command -> {}", execCmdToken.toString());
 
@@ -38,11 +38,11 @@ public class CommandExecutor {
 		
 	}
 	
-	public String executeCopyCommand(String source, String destination) throws IOException, InterruptedException {
+	public String executeCopyCommand(String source, String destination, boolean transportSecured) throws IOException, InterruptedException {
 		
 		StringJoiner execCmdToken = new StringJoiner(" ");
 		
-		execCmdToken.add(Commands.BASE_COPY).add(Commands.DOCKER.concat(source)).add(Commands.DOCKER.concat(destination));
+		execCmdToken.add(Commands.BASE_COPY.concat(String.valueOf(transportSecured))).add(Commands.DOCKER.concat(source)).add(Commands.DOCKER.concat(destination));
 		
 		logger.info("Copy Command -> {}", execCmdToken.toString());
 
