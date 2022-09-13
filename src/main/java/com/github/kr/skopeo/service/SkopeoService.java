@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.kr.skopeo.command.CommandExecutor;
+import com.github.kr.skopeo.config.ConfigurationProperties;
 import com.github.kr.skopeo.responses.InspectResponse;
 import com.github.kr.skopeo.responses.TransferEntity;
 
@@ -19,6 +20,9 @@ public class SkopeoService {
 
 	@Autowired
 	CommandExecutor cmdExecutor;
+	
+	@Autowired
+	ConfigurationProperties configurationProperties;
 	
 	public InspectResponse inspectImage(boolean tlsVerify, String imageReference) {
 		
@@ -42,9 +46,9 @@ public class SkopeoService {
 		String destination = transferEntity.getDestination();
 		boolean transportSecured = transferEntity.isSecuredTransportLayer();
 		String response = "";
-		
+		boolean tlsVerify = configurationProperties.isTlsVerify();
 		try {
-			response = cmdExecutor.executeCopyCommand(source, destination, transportSecured);
+			response = cmdExecutor.executeCopyCommand(source, destination, tlsVerify, transportSecured);
 		} catch (IOException | InterruptedException ex) {
 			ex.printStackTrace();
 		}

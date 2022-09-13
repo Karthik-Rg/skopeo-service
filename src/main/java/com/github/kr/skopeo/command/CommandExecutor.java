@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.text.MessageFormat;
 import java.util.StringJoiner;
 import java.util.stream.Collectors;
 
@@ -38,11 +39,11 @@ public class CommandExecutor {
 		
 	}
 	
-	public String executeCopyCommand(String source, String destination, boolean transportSecured) throws IOException, InterruptedException {
+	public String executeCopyCommand(String source, String destination, boolean tlsVerifySource, boolean tlsVerifyDestination) throws IOException, InterruptedException {
 		
 		StringJoiner execCmdToken = new StringJoiner(" ");
 		
-		execCmdToken.add(Commands.BASE_COPY.concat(String.valueOf(transportSecured))).add(Commands.DOCKER.concat(source)).add(Commands.DOCKER.concat(destination));
+		execCmdToken.add(MessageFormat.format(Commands.BASE_COPY, tlsVerifySource).concat(String.valueOf(tlsVerifyDestination))).add(Commands.DOCKER.concat(source)).add(Commands.DOCKER.concat(destination));
 		
 		logger.info("Copy Command -> {}", execCmdToken.toString());
 
