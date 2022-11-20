@@ -17,11 +17,11 @@ public class CommandExecutor {
 
 	Logger logger = LoggerFactory.getLogger(CommandExecutor.class);
 
-	public String executeInspectCommand(boolean tlsVerify, String imageReference) throws IOException, InterruptedException {
+	public String executeInspectCommand(boolean tlsVerify, String transport, String imageReference) throws IOException, InterruptedException {
 
 		StringJoiner execCmdToken = new StringJoiner(" ");
 
-		execCmdToken.add(Commands.INSPECT.concat(String.valueOf(tlsVerify))).add(imageReference);
+		execCmdToken.add(Commands.INSPECT.concat(String.valueOf(tlsVerify))).add(transport.concat(Commands.TRANSPORT_CONNECTOR.concat(imageReference)));
 
 		logger.info("Inspect Command -> {}", execCmdToken.toString());
 
@@ -39,11 +39,13 @@ public class CommandExecutor {
 		
 	}
 	
-	public String executeCopyCommand(String source, String destination, boolean tlsVerifySource, boolean tlsVerifyDestination) throws IOException, InterruptedException {
+	public String executeCopyCommand(String source, String transport, String destination, boolean tlsVerifySource, boolean tlsVerifyDestination) throws IOException, InterruptedException {
 		
 		StringJoiner execCmdToken = new StringJoiner(" ");
 		
-		execCmdToken.add(MessageFormat.format(Commands.BASE_COPY, tlsVerifySource).concat(String.valueOf(tlsVerifyDestination))).add(Commands.DOCKER.concat(source)).add(Commands.DOCKER.concat(destination));
+		execCmdToken.add(MessageFormat.format(Commands.BASE_COPY, tlsVerifySource)
+				.concat(String.valueOf(tlsVerifyDestination))).add(transport.concat(Commands.TRANSPORT_CONNECTOR.concat(source)))
+															 .add(transport.concat(Commands.TRANSPORT_CONNECTOR.concat(destination)));
 		
 		logger.info("Copy Command -> {}", execCmdToken.toString());
 

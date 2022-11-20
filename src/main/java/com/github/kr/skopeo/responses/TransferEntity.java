@@ -1,5 +1,7 @@
 package com.github.kr.skopeo.responses;
 
+import com.github.kr.skopeo.util.Transport;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,5 +18,7 @@ public class TransferEntity {
 	private String destination;
 	
 	private boolean securedTransportLayer;
+	
+	private Transport transport;
 	
 }

@@ -24,12 +24,12 @@ public class SkopeoService {
 	@Autowired
 	ConfigurationProperties configurationProperties;
 	
-	public InspectResponse inspectImage(boolean tlsVerify, String imageReference) {
+	public InspectResponse inspectImage(String transport, boolean tlsVerify, String imageReference) {
 		
 		logger.info("inspectImage");
 		InspectResponse inspectResponse = null;
 		try {
-			String response = cmdExecutor.executeInspectCommand(tlsVerify, imageReference);
+			String response = cmdExecutor.executeInspectCommand(tlsVerify, transport, imageReference);
 			inspectResponse = new ObjectMapper().readValue(response, InspectResponse.class);
 		} catch (IOException | InterruptedException ex) {
 			
@@ -45,10 +45,11 @@ public class SkopeoService {
 		String source = transferEntity.getSource();
 		String destination = transferEntity.getDestination();
 		boolean transportSecured = transferEntity.isSecuredTransportLayer();
+		String transport = transferEntity.getTransport().toString();
 		String response = "";
 		boolean tlsVerify = configurationProperties.isTlsVerify();
 		try {
-			response = cmdExecutor.executeCopyCommand(source, destination, tlsVerify, transportSecured);
+			response = cmdExecutor.executeCopyCommand(source, transport, destination, tlsVerify, transportSecured);
 		} catch (IOException | InterruptedException ex) {
 			ex.printStackTrace();
 		}

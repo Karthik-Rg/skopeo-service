@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.github.kr.skopeo.responses.InspectResponse;
 import com.github.kr.skopeo.responses.TransferEntity;
 import com.github.kr.skopeo.service.SkopeoService;
+import com.github.kr.skopeo.util.Transport;
 
 @RestController
 public class SkopeoController {
@@ -27,10 +28,10 @@ public class SkopeoController {
 	}
 	
 	@GetMapping("/inspect")
-	public InspectResponse inspectImage(@RequestParam("tls-verify") boolean tlsVerify, @RequestParam("imageReference") String imageReference) {
+	public InspectResponse inspectImage(@RequestParam("transport") Transport transport,  @RequestParam("tls-verify") boolean tlsVerify, @RequestParam("imageReference") String imageReference) {
 		
 		logger.info("inspectImage Controller");
-		return skopeoService.inspectImage(tlsVerify, imageReference);
+		return skopeoService.inspectImage(transport.toString(), tlsVerify, imageReference);
 		
 	}
 
